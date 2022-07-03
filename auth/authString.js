@@ -1,4 +1,5 @@
 'use strict';
+
 const base64 = require('base-64');
 function createBasicAuthString(username, password) {
   const mockUser = {
