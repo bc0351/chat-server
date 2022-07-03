@@ -4,26 +4,33 @@
  * Module dependencies.
  */
 
- let chatConnection = require('./lib/connection');
- let socket = require('socket.io');
+ const chatConnection = require('./lib/connection');
+ const socket = require('socket.io');
  
- let app = require('./src/server');
- let debug = require('debug')('chat-app:server');
- let http = require('http');
+ const app = require('./src/server');
+ const { db } = require('./src/models');
+ const debug = require('debug')('chat-app:server');
+ const http = require('http');
  
  /**
   * Get port from environment and store in Express.
   */
  
- let port = normalizePort(process.env.PORT || '3002');
+ const port = normalizePort(process.env.PORT || '3002');
  app.set('port', port);
  
+/**
+ * Create Sequelize DB Instance.
+ */
+
+db.sync();
+
  /**
   * Create HTTP server.
   */
  
- let server = http.createServer(app);
- let io = socket(server, {
+ const server = http.createServer(app);
+ const io = socket(server, {
    cors: {
      origin: '*',
      methods: ['GET','POST']
@@ -44,7 +51,7 @@
   */
  
  function normalizePort(val) {
-   let port = parseInt(val, 10);
+   const port = parseInt(val, 10);
  
    if (isNaN(port)) {
      // named pipe
@@ -68,7 +75,7 @@
      throw error;
    }
  
-   let bind = typeof port === 'string'
+   const bind = typeof port === 'string'
      ? 'Pipe ' + port
      : 'Port ' + port;
  
@@ -92,8 +99,8 @@
   */
  
  function onListening() {
-   let addr = server.address();
-   let bind = typeof addr === 'string'
+   const addr = server.address();
+   const bind = typeof addr === 'string'
      ? 'pipe ' + addr
      : 'port ' + addr.port;
    debug('Listening on ' + bind);

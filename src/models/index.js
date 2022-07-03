@@ -1,5 +1,6 @@
 'use strict';
 require('dotenv').config();
+
 const { Sequelize, DataTypes } = require('sequelize');
 const messagesModel = require('./messages');
 const usersModel = require('./users');
